@@ -75,6 +75,7 @@ ScreenManager:
             text: "Parse"
             size_hint: .3, .2
             pos_hint: {'x':.65, 'y': .0}
+            on_press:app.custom_handle()
             on_release: app.apply_parser()
 
 
@@ -101,7 +102,6 @@ ScreenManager:
             Button:
                 text: "Save"
                 on_press: app.set_cwd_(filechooser_.path, text_input.text)
-                on_release:app.custom_handle()
                 on_release: app.root.current = "menu"
 
 

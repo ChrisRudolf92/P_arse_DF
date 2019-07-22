@@ -4,8 +4,11 @@ from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
 from kivy.properties import StringProperty
 import os
 import Document_Class as dc
+from custom_exceptions import PathError
 
 class MyApp(App):
+
+    title = "P(arse)DF"
 
     cwd_ = StringProperty()
     pdf_dir_ = StringProperty()
@@ -25,14 +28,18 @@ class MyApp(App):
         return
 
     def custom_handle(self):
-        self.AppHandler.wd = self.cwd_
+        if self.cwd_:
+            self.AppHandler.wd = self.cwd_
+        else:
+            self.AppHandler.wd = self.pdf_dir_
         self.AppHandler.set_wd()
 
     def apply_parser(self):
         try:
             self.AppHandler.parse(self.pdf_dir_)
-        except:
-            print("Parsing not possible")
+        except(PathError) as PE:
+            print(PE.message)
+
 
 
 

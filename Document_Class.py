@@ -1,5 +1,5 @@
 from tika import parser
-from custom_exceptions import InputError
+from custom_exceptions import InputError, PathError
 from os import path as pt
 from os import listdir, getcwd, mkdir, rename
 
@@ -53,6 +53,8 @@ class Parsing_Handler:
 
 
     def parse(self, dir):
+        if not dir:
+            raise PathError
         try:
             self._dir_list_ = listdir(dir)
             for file in self._dir_list_:
