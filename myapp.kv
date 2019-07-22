@@ -1,0 +1,142 @@
+#:import utils kivy.utils
+ScreenManager:
+    id: Screen_manager
+    MenuScreen:
+        id: Menu_screen
+        name: 'menu'
+        manager: 'screen_manager'
+    FilechooserScreen:
+        id: Filechooserscreen
+        name: 'filechooserscreen'
+        manager: 'screen_manager'
+    FilechooserScreenPDF:
+        id: Filechooserscreenpdf
+        name: 'filechooserscreenpdf'
+        manager: 'screen_manager'
+
+<MenuScreen>
+    working_dir_box: working_dir_box.__self__
+    aim_dir_box: aim_dir_box.__self__
+    FloatLayout:
+        id: float_box
+        size: 400,200
+        canvas.before:
+            Color:
+                rgb: utils.get_color_from_hex("#03A9F4")
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        FloatLayout:
+            id: text_box
+            size_hint: 0.8, .7
+            pos_hint: {'x': .1, 'y': .25 }
+            canvas.before:
+                Color:
+                    rgb: utils.get_color_from_hex("#B3E5FC")
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Label:
+                id: working_dir_box
+                size_hint: 1, .2
+                pos_hint: {'x': .0, 'y': .8}
+                text_size: self.size
+                markup: True
+                text: "[color=#212121]Directory .pdf: " + app.pdf_dir_ + "[/color]"
+
+            Label:
+                id: aim_dir_box
+                size_hint: 1, .2
+                pos_hint: {'x': .0, 'y': .4}
+                text_size: self.size
+                markup: True
+                text: "[color=#212121]Directory .txt: " + app.cwd_ + "[/color]"
+
+
+        Button:
+            canvas.before:
+                Color:
+                    rgb: 8, 65, 92
+            id: pdf_button
+            text: 'Aim Directory for pdf'
+            size_hint: .3, .2
+            pos_hint: {'x':.05, 'y': .0}
+            on_release: app.root.current = "filechooserscreenpdf"
+
+        Button:
+            id: txt_button
+            text: 'Aim Directory for txt'
+            size_hint: .3, .2
+            pos_hint: {'x':.35, 'y': .0}
+            on_release: app.root.current = "filechooserscreen"
+
+        Button:
+            id: parse_pdf_button
+            text: "Parse"
+            size_hint: .3, .2
+            pos_hint: {'x':.65, 'y': .0}
+            on_release: app.apply_parser()
+
+
+
+<FilechooserScreen>
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        FileChooserListView:
+            id: filechooser_
+            on_selection: text_input.text = self.selection and self.selection[0] or ''
+        TextInput:
+            id: text_input
+            size_hint_y: None
+            height: 30
+            multiline: False
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: app.root.current = "menu"
+            Button:
+                text: "Save"
+                on_press: app.set_cwd_(filechooser_.path, text_input.text)
+                on_release:app.custom_handle()
+                on_release: app.root.current = "menu"
+
+
+<FilechooserScreenPDF>
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        FileChooserListView:
+            id: filechooser_
+            on_selection: text_input.text = self.selection and self.selection[0] or ''
+        TextInput:
+            id: text_input
+            size_hint_y: None
+            height: 30
+            multiline: False
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: app.root.current = "menu"
+            Button:
+                text: "Save"
+                on_press: app.set_pdf_dir_(filechooser_.path, text_input.text)
+                on_release: app.root.current = "menu"
+
+
+
+
+
+
+
+
+
+
+
+

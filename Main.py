@@ -2,6 +2,7 @@ import Document_Class as dc
 from tkinter import Tk
 from tkinter import filedialog as fd
 
+
 if __name__ == "__main__":
 
     root = Tk()

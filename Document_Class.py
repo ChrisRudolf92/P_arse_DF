@@ -32,9 +32,9 @@ class Document:
 
 class Parsing_Handler:
 
-    def __init__(self, dir=""):
+    def __init__(self, dir="", wd=getcwd()):
 
-        self.wd = getcwd()
+        self.wd = wd
         self.Parsecount = 0
         self.failed = []
 
@@ -42,11 +42,11 @@ class Parsing_Handler:
             self.parse(dir)
 
     def set_wd(self, iteration: int = 0) -> int:
-        if iteration == 20:
+        if iteration == 100:
             return
         try:
-            mkdir(self.wd + "/ParsedTexts_" +str(iteration))
-            self.wd = self.wd + "/ParsedTexts_" +str(iteration)
+            mkdir(self.wd + "ParsedTexts_" +str(iteration))
+            self.wd = self.wd + "ParsedTexts_" +str(iteration)
         except FileExistsError:
             self.set_wd(iteration+1)
 
@@ -56,8 +56,8 @@ class Parsing_Handler:
         try:
             self._dir_list_ = listdir(dir)
             for file in self._dir_list_:
-                if not file.startswith("."):
-                    file_path = dir + "/" + file
+                if not file.startswith(".") and file.endswith(".pdf"):
+                    file_path = dir + file
                     try:
                         Document(file_path, self.wd).parse()
                         self.Parsecount = self.Parsecount + 1
