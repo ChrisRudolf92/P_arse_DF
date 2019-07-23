@@ -32,7 +32,10 @@ class MyApp(App):
             self.AppHandler.wd = self.cwd_
         else:
             self.AppHandler.wd = self.pdf_dir_
-        self.AppHandler.set_wd()
+        try:
+            self.AppHandler.set_wd()
+        except PermissionError as PE:
+            print(PE.strerror+ ":to create the required directory in directory "+ PE.filename)
 
     def apply_parser(self):
         try:
